@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,7 +21,20 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::post('/products/{product}/addToCart', [ProductController::class, 'addToCart'])->name('addToCart');
 });
+
+Route::get('/dashboard', function () {
+    $userData = null;
+
+    if (auth()->user()) {
+        $userData = User::where('id', auth()->user()->id)->first();
+
+        $userData->load('cart.cartItems.product');
+    }
+
+    return Inertia::render('Dashboard', [
+        'products' => Product::all(),
+        'userData' => $userData
+    ]);
+})->name('dashboard');
