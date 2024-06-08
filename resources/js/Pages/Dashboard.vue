@@ -43,7 +43,16 @@ export default {
                     :key="product.id"
                     class="flex flex-col items-center"
                 >
-                    <div class="p-6 text-white rounded-md bg-slate-900">
+                    <div
+                        class="p-6 text-white duration-200 ease-in-out border-2 rounded-md bg-slate-900 hover:border-blue-600 hover:rounded-xl"
+                        :class="
+                            userData.cart.cart_items.some(
+                                (item) => item.product_id === product.id
+                            )
+                                ? 'border-blue-600 rounded-xl'
+                                : ''
+                        "
+                    >
                         <img
                             class="rounded-md"
                             :src="product.image"

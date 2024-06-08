@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Models\Product;
 use App\Models\User;
@@ -22,6 +23,8 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::post('/products/{product}/addToCart', [ProductController::class, 'addToCart'])->name('addToCart');
+    Route::post('/products/{product}/removeFromCart', [ProductController::class, 'removeFromCart'])->name('removeFromCart');
+    Route::get('/cart', [CartController::class, 'show'])->name('showCart');
 });
 
 Route::get('/dashboard', function () {

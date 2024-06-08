@@ -53,6 +53,18 @@ const logout = () => {
                     v-if="$page.props.auth.user"
                     class="hidden sm:flex sm:items-center sm:ms-6"
                 >
+                    <div class="inline-flex">
+                        <p
+                            class="relative p-1 px-2 text-xs text-white bg-red-500 rounded-full w-fit h-fit left-3 -top-2"
+                        >
+                            {{ cartItems ? cartItems.length : 0 }}
+                        </p>
+                        <FontAwesomeIcon
+                            @click="router.get('/cart')"
+                            class="flex p-3 text-white bg-blue-800 rounded-full me-3 hover:cursor-pointer"
+                            :icon="faCartShopping"
+                        ></FontAwesomeIcon>
+                    </div>
                     <!-- Settings Dropdown -->
                     <div class="relative ms-3">
                         <Dropdown align="right" width="48">
@@ -75,19 +87,6 @@ const logout = () => {
                                 </button>
 
                                 <span v-else class="inline-flex rounded-md">
-                                    <div class="inline-flex">
-                                        <p
-                                            class="relative p-1 px-2 text-xs text-white bg-red-500 rounded-full w-fit h-fit left-3 -top-2"
-                                        >
-                                            {{
-                                                cartItems ? cartItems.length : 0
-                                            }}
-                                        </p>
-                                        <FontAwesomeIcon
-                                            class="flex p-3 text-white bg-blue-800 rounded-full me-3"
-                                            :icon="faCartShopping"
-                                        ></FontAwesomeIcon>
-                                    </div>
                                     <button
                                         type="button"
                                         class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50"

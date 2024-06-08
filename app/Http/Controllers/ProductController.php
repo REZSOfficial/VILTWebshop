@@ -32,7 +32,14 @@ class ProductController extends Controller
                 'quantity' => 1
             ]);
         }
+    }
 
-        return back();
+    public function removeFromCart(Product $product)
+    {
+
+        $user = User::where('id', auth()->user()->id)->first();
+        $cartItem = $user->cart->cartItems->where('product_id', $product->id)->first();
+        $cartItem->quantity = $cartItem->quantity - 1;
+        $cartItem->save();
     }
 }
