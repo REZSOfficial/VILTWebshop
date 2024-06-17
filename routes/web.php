@@ -1,12 +1,14 @@
 <?php
 
+use App\Models\User;
+use Inertia\Inertia;
+use App\Models\Product;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
-use App\Models\Product;
-use App\Models\User;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\DashBoardController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -25,19 +27,7 @@ Route::middleware([
     Route::post('/products/{product}/addToCart', [ProductController::class, 'addToCart'])->name('addToCart');
     Route::post('/products/{product}/removeFromCart', [ProductController::class, 'removeFromCart'])->name('removeFromCart');
     Route::get('/cart', [CartController::class, 'show'])->name('showCart');
+    Route::delete('/cart/{cartItem}', [CartItemController::class, 'delete'])->name('deleteCartItem');
 });
 
-Route::get('/dashboard', function () {
-    $userData = null;
-
-    if (auth()->user()) {
-        $userData = User::where('id', auth()->user()->id)->first();
-
-        $userData->load('cart.cartItems.product');
-    }
-
-    return Inertia::render('Dashboard', [
-        'products' => Product::all(),
-        'userData' => $userData
-    ]);
-})->name('dashboard');
+Route::get('/dashboard', [DashBoardController::class, 'index'])->name('dashboard');

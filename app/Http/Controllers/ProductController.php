@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
-use App\Models\CartItem;
-use App\Models\Product;
 use App\Models\User;
-
+use App\Models\Product;
+use App\Models\CartItem;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function addToCart(Product $product)
+    public function addToCart(Product $product, Request $request)
     {
+        $quantity = $request['quantity'] ?? 1;
         $user = User::where('id', auth()->user()->id)->first();
 
         if (!$user->cart) {
@@ -23,23 +24,26 @@ class ProductController extends Controller
             $cartItem = $user->cart->cartItems->where('product_id', $product->id)->first();
             $cartItem->update([
                 'cart_id' => $user->cart->id,
-                'quantity' => $cartItem->quantity + 1
+                'quantity' => $cartItem->quantity + $quantity
             ]);
         } else {
             CartItem::create([
                 'cart_id' => $user->cart->id,
                 'product_id' => $product->id,
-                'quantity' => 1
+                'quantity' => $quantity
             ]);
         }
+
+        return back();
     }
 
     public function removeFromCart(Product $product)
     {
-
         $user = User::where('id', auth()->user()->id)->first();
         $cartItem = $user->cart->cartItems->where('product_id', $product->id)->first();
-        $cartItem->quantity = $cartItem->quantity - 1;
+        $cartItem->quantity = max(1, $cartItem->quantity - 1);
         $cartItem->save();
+
+        return back();
     }
 }

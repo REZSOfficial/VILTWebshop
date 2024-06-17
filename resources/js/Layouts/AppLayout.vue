@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { Head, Link, router } from "@inertiajs/vue3";
+import { Head, router } from "@inertiajs/vue3";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
@@ -14,7 +14,10 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 defineProps({
     title: String,
-    cartItems: Array,
+    cartItems: {
+        type: Array,
+        default: null,
+    },
 });
 
 const showingNavigationDropdown = ref(false);

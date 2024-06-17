@@ -1,20 +1,41 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout.vue";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useForm } from "@inertiajs/vue3";
 
 export default {
     setup() {
-        const addToCart = useForm({
-            product: "",
-        });
-        const removeFromCart = useForm({
-            product: "",
-        });
+        const form = useForm({});
 
-        return { addToCart, removeFromCart };
+        const addToCart = (product_id) => {
+            form.post(route("addToCart", product_id), {
+                preserveScroll: true,
+            });
+        };
+
+        const removeFromCart = (product_id) => {
+            form.post(route("removeFromCart", product_id), {
+                preserveScroll: true,
+            });
+        };
+
+        const deleteCartItem = (cart_item_id) => {
+            form.delete(route("deleteCartItem", cart_item_id), {
+                preserveScroll: true,
+            });
+        };
+
+        return { addToCart, removeFromCart, deleteCartItem, form };
     },
     components: {
         AppLayout,
+        FontAwesomeIcon,
+    },
+    computed: {
+        faTrash() {
+            return faTrash;
+        },
     },
     props: {
         cart: Object,
@@ -24,14 +45,16 @@ export default {
 
 <template>
     <AppLayout :title="'Cart'" class="text-white">
-        <div class="flex flex-row p-8 text-6xl border-b-2">
+        <div
+            class="flex flex-row px-2 py-2 text-2xl border-b-2 sm:p-8 md:text-6xl"
+        >
             <div
                 class="border-4 w-[0.5em] h-[0.5em] my-auto me-2 rounded-md"
             ></div>
-            Shopping Cart
+            <h1>Shopping Cart</h1>
         </div>
-        <div class="p-12 mb-16">
-            <div class="flex flex-col border border-t-0 min-w-fit">
+        <div class="min-h-screen pt-12 mb-16 sm:p-12">
+            <div class="flex flex-col border border-t-0">
                 <div
                     class="flex flex-col px-4 pt-6 mb-6 border-t md:flex-row"
                     v-for="cart_item in cart.cart_items"
@@ -40,24 +63,16 @@ export default {
                     <img
                         class="w-32 rounded-md shadow-lg me-4"
                         :src="cart_item.product.image"
-                        alt=""
+                        alt="Cart Item Image"
                     />
                     <div class="flex flex-col justify-between text-l">
                         <p>{{ cart_item.product.name.toUpperCase() }}</p>
-                        <div class="flex">
+                        <div class="flex flex-col md:flex-row">
                             <p class="my-auto">Quantity:</p>
-                            <div class="flex ms-4">
+                            <div class="flex md:ms-4">
                                 <span
-                                    @click.prevent="
-                                        this.removeFromCart.post(
-                                            route(
-                                                'removeFromCart',
-                                                cart_item.product.id
-                                            ),
-                                            {
-                                                preserveScroll: true,
-                                            }
-                                        )
+                                    @click="
+                                        removeFromCart(cart_item.product.id)
                                     "
                                     class="px-3 py-1 duration-150 ease-in-out border hover:bg-red-600 hover:cursor-pointer"
                                     >-</span
@@ -65,20 +80,26 @@ export default {
                                     cart_item.quantity
                                 }}</span
                                 ><span
-                                    @click.prevent="
-                                        this.addToCart.post(
-                                            route(
-                                                'addToCart',
-                                                cart_item.product.id
-                                            ),
-                                            {
-                                                preserveScroll: true,
-                                            }
-                                        )
-                                    "
+                                    @click="addToCart(cart_item.product.id)"
                                     class="px-3 py-1 duration-150 ease-in-out border hover:bg-green-600 hover:cursor-pointer"
                                     >+</span
                                 >
+                            </div>
+                            <div class="my-auto text-xl">
+                                <!-- TRASH ICON -->
+                                <FontAwesomeIcon
+                                    @click="
+                                        this.removeFromCart.delete(
+                                            route(
+                                                'deleteCartItem',
+                                                cart_item.id
+                                            ),
+                                            { preserveScroll: true }
+                                        )
+                                    "
+                                    class="text-red-600 md:mt-2 md:ms-4 hover:cursor-pointer"
+                                    :icon="faTrash"
+                                ></FontAwesomeIcon>
                             </div>
                         </div>
                         <p>
@@ -99,23 +120,26 @@ export default {
             </div>
         </div>
         <div
-            class="fixed bottom-0 flex flex-row justify-between w-full p-5 text-4xl bg-green-600 border-t-2 h-fit"
+            class="fixed bottom-0 flex flex-col justify-between w-full py-2 text-sm bg-green-600 border-t-2 sm:flex-row sm:p-5 h-fit sm:text-xl md:text-2xl lg:text-3xl"
         >
             <div class="flex my-auto">
                 <div
-                    class="border-4 w-[0.5em] h-[0.5em] my-auto me-2 rounded-md"
+                    class="border-4 w-[0.5em] h-[0.5em] my-auto rounded-md"
                 ></div>
-                <div>Items in cart: {{ cart.cart_items.length }}</div>
+                <p class="ms-2">Items in cart: {{ cart.cart_items.length }}</p>
             </div>
             <div class="my-auto">
-                Total price:
-                {{
-                    cart.cart_items.reduce(
-                        (accumulator, item) =>
-                            accumulator + item.product.price * item.quantity,
-                        0
-                    )
-                }}$
+                <p>
+                    Total price:
+                    {{
+                        cart.cart_items.reduce(
+                            (accumulator, item) =>
+                                accumulator +
+                                item.product.price * item.quantity,
+                            0
+                        )
+                    }}$
+                </p>
             </div>
 
             <div>
