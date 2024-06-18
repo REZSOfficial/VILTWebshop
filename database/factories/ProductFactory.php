@@ -20,8 +20,8 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_category_id' => ProductCategory::factory(),
-            'brand_id' => Brand::factory(),
+            'product_category_id' => ProductCategory::all()->random()->id,
+            'brand_id' => Brand::all()->random()->id,
             'name' => $this->faker->words(2, true),
             'description' => $this->faker->sentence(),
             'price' => $this->faker->numberBetween(1, 100),

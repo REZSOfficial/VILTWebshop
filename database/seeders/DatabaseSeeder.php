@@ -17,8 +17,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $brands = ['Adidas', 'Puma', 'Reebok', 'Vans', 'Under Armour', 'New Balance'];
+        $categories = [
+            'Electronics',
+            'Clothing',
+            'Home',
+            'Books',
+            'Sports',
+        ];
 
+        foreach ($brands as $brand) {
+            Brand::create(['name' => $brand]);
+        }
+        foreach ($categories as $category) {
+            ProductCategory::create(['name' => $category]);
+        }
         Product::factory(40)->create();
     }
 }

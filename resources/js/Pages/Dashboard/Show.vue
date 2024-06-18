@@ -6,6 +6,7 @@ import { ref } from "vue";
 import { useForm } from "@inertiajs/vue3";
 import { reactive } from "vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
+import Filter from "@/Pages/Dashboard/Partials/Filter.vue";
 
 export default {
     setup() {
@@ -54,12 +55,14 @@ export default {
     props: {
         products: Object,
         userData: Object,
+        brands: Object,
     },
     components: {
         AppLayout,
         AddToCartButton,
         AddedMessage,
         SecondaryButton,
+        Filter,
     },
     mounted() {
         this.initializeQuantities(this.products);
@@ -70,16 +73,25 @@ export default {
 <template>
     <AppLayout
         title="Dashboard"
-        :cartItems="userData.cart ? userData.cart.cart_items : null"
+        :cartItems="
+            userData ? (userData.cart ? userData.cart.cart_items : null) : null
+        "
     >
         <div>
             <AddedMessage :on="state.success" class="me-3">
                 Item added to cart.
             </AddedMessage>
         </div>
-        <div class="flex justify-center py-12">
+
+        <Filter :brands="brands"></Filter>
+        <p
+            class="p-1 px-4 mx-auto mt-12 mb-2 text-white bg-green-600 rounded w-fit"
+        >
+            Results: {{ products.total }}
+        </p>
+        <div class="flex justify-center min-h-screen">
             <div
-                class="grid grid-cols-2 gap-8 p-6 overflow-hidden shadow-xl sm:rounded-lg md:grid-cols-3 lg:grid-cols-4 bg-slate-600"
+                class="grid grid-cols-1 gap-8 p-6 overflow-hidden rounded-lg shadow-xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-slate-600"
             >
                 <!-- Product -->
                 <div
@@ -90,11 +102,14 @@ export default {
                     <div
                         class="p-6 text-white duration-200 ease-in-out border-2 bg-slate-900 hover:border-blue-600 hover:rounded-xl"
                         :class="
-                            userData.cart
-                                ? userData.cart.cart_items.some(
-                                      (item) => item.product_id === product.id
-                                  )
-                                    ? 'border-blue-600 rounded-xl'
+                            userData
+                                ? userData.cart
+                                    ? userData.cart.cart_items.some(
+                                          (item) =>
+                                              item.product_id === product.id
+                                      )
+                                        ? 'border-blue-600 rounded-xl'
+                                        : ''
                                     : ''
                                 : ''
                         "
@@ -160,7 +175,7 @@ export default {
                         </div>
                     </div>
                 </div>
-                <div class="mt-4">
+                <div>
                     <SecondaryButton
                         @click="getProducts(products.prev_page_url)"
                         :disabled="!products.prev_page_url"

@@ -32,7 +32,7 @@ const logout = () => {
     <div>
         <Head :title="title" />
         <nav
-            class="sticky top-0 p-4 bg-gradient-to-r from-gray-600 via-gray-700 to-gray-500"
+            class="sticky top-0 z-50 p-4 bg-gradient-to-r from-gray-600 via-gray-700 to-gray-500"
         >
             <div class="flex justify-between">
                 <div class="flex">
