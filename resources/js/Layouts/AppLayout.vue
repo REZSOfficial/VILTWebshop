@@ -31,9 +31,15 @@ const logout = () => {
     <!-- Good -->
     <div>
         <Head :title="title" />
-        <nav class="sticky top-0 z-50 p-4 bg-slate-600">
+        <nav class="sticky top-0 z-50 p-4 bg-slate-800">
             <div class="flex justify-between">
                 <div class="flex">
+                    <a
+                        href="/"
+                        class="my-auto text-3xl font-extrabold text-transparent me-10 bg-clip-text bg-gradient-to-r from-pink-500 to-violet-400"
+                    >
+                        Webshop
+                    </a>
                     <NavLink
                         :href="route('dashboard')"
                         :active="route().current('dashboard')"
@@ -62,7 +68,7 @@ const logout = () => {
                         </p>
                         <FontAwesomeIcon
                             @click="router.get('/cart')"
-                            class="flex p-3 text-white bg-blue-800 rounded-full me-3 hover:cursor-pointer"
+                            class="flex p-3 text-white bg-blue-600 rounded-full me-3 hover:cursor-pointer"
                             :icon="faCartShopping"
                         ></FontAwesomeIcon>
                     </div>
@@ -250,7 +256,7 @@ const logout = () => {
             </div>
         </nav>
 
-        <main class="bg-slate-800">
+        <main class="bg-slate-800 bg-gradient-to-br from-slate-800 to-blue-500">
             <slot />
         </main>
     </div>

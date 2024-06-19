@@ -91,7 +91,7 @@ export default {
         </p>
         <div class="flex justify-center min-h-screen">
             <div
-                class="grid grid-cols-1 gap-8 p-6 overflow-hidden rounded-lg shadow-xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-slate-600"
+                class="grid grid-cols-1 gap-8 p-6 overflow-hidden rounded-lg shadow-xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-slate-800 drop-shadow-xl"
             >
                 <!-- Product -->
                 <div
