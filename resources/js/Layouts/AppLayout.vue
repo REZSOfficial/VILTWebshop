@@ -31,9 +31,7 @@ const logout = () => {
     <!-- Good -->
     <div>
         <Head :title="title" />
-        <nav
-            class="sticky top-0 z-50 p-4 bg-gradient-to-r from-gray-600 via-gray-700 to-gray-500"
-        >
+        <nav class="sticky top-0 z-50 p-4 bg-slate-600">
             <div class="flex justify-between">
                 <div class="flex">
                     <NavLink

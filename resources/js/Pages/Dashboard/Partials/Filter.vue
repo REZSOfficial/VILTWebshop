@@ -21,7 +21,7 @@ const handleFilter = () => {
 
 <template>
     <div
-        class="sticky py-2 flex justify-center border-b-2 border-slate-500 text-white sm:top-[76px] top-[86px] sm:p-4"
+        class="sticky py-2 flex justify-center border-b-2 bg-slate-800 border-slate-500 text-white sm:top-[76px] top-[86px] sm:p-4"
     >
         <form
             class="flex flex-row flex-wrap gap-3"

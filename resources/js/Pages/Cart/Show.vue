@@ -1,12 +1,16 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout.vue";
+import Checkout from "./Partials/Checkout.vue";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useForm } from "@inertiajs/vue3";
+import { ref } from "vue";
 
 export default {
     setup() {
         const form = useForm({});
+
+        const show = ref(true);
 
         const addToCart = (product_id) => {
             form.post(route("addToCart", product_id), {
@@ -26,11 +30,23 @@ export default {
             });
         };
 
-        return { addToCart, removeFromCart, deleteCartItem, form };
+        const showCheckout = () => {
+            show.value = !show.value;
+        };
+
+        return {
+            addToCart,
+            removeFromCart,
+            deleteCartItem,
+            showCheckout,
+            form,
+            show,
+        };
     },
     components: {
         AppLayout,
         FontAwesomeIcon,
+        Checkout,
     },
     computed: {
         faTrash() {
@@ -110,8 +126,10 @@ export default {
                             &times; {{ cart_item.quantity }} =
                             <span class="text-green-600">
                                 {{
-                                    cart_item.product.price *
-                                    cart_item.quantity
+                                    (
+                                        cart_item.product.price *
+                                        cart_item.quantity
+                                    ).toFixed(2)
                                 }}$</span
                             >
                         </p>
@@ -144,11 +162,13 @@ export default {
 
             <div>
                 <button
+                    @click.prevent="showCheckout"
                     class="px-2 duration-200 ease-in-out border-4 border-white rounded hover:bg-white hover:text-green-600"
                 >
                     Checkout
                 </button>
             </div>
         </div>
+        <Checkout :cart="cart" :show="show" @close="showCheckout"></Checkout>
     </AppLayout>
 </template>

@@ -13,7 +13,7 @@ defineProps({
         >
             <div
                 v-show="on"
-                class="fixed p-1 px-4 text-sm text-white -translate-x-1/2 bg-green-700 border rounded shadow top-6 min-w-12 left-1/2"
+                class="fixed p-1 px-4 z-[200] text-sm text-white -translate-x-1/2 bg-green-700 border rounded shadow top-6 min-w-12 left-1/2"
             >
                 <slot />
             </div>
